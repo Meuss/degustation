@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Game;
 use App\Models\Participation;
+use App\Models\Wine;
+use App\Models\Choice;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,8 +39,30 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        $this->call([
-            WineSeeder::class,
-        ]);
+        $firstGame = Game::first();
+        for ($i = 1; $i < 11; $i++) {            
+            Wine::factory()->for($firstGame)->create([
+                'position' => $i,
+            ]);
+        }
+
+        $users->each(function ($user, $key) {
+            $participations = Participation::where('user_id', $user->id)->get();
+            $participations->each(function ($item, $key) {
+                $game = $item->game_id;
+                $user = $item->user_id;
+                $wines = Wine::where('game_id', $game)->get();
+                $order = range(1, 10);
+                shuffle($order);
+                for ($i = 1; $i < 11; $i++) {
+                    Choice::factory()->create([
+                        'game_id' => $item->game_id,
+                        'user_id' => $user,
+                        'wine_id' => $wines[$i-1]->id,
+                        'position' => $order[$i-1],
+                    ]);
+                }
+            });
+        });
     }
 }
