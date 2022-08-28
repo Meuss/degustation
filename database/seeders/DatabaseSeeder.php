@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(9)->create();
 
         $users->each(function ($item, $key) {
-            Game::factory()->for($item)->create();
+            Game::factory()->for($item)->create([
+                'ready' => true,
+            ]);
         });
 
         $users->each(function ($item, $key) {
@@ -34,5 +36,9 @@ class DatabaseSeeder extends Seeder
                 'game_id' => $firstGame->id,
             ]);
         });
+
+        $this->call([
+            WineSeeder::class,
+        ]);
     }
 }

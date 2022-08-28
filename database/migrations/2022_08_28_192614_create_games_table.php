@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('title');
             $table->string('invite_key')->unique();
+            $table->boolean('ready')->default(false);
             $table->timestamps();
         });
     }
