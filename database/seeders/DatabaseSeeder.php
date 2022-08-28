@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Game;
+use App\Models\Participation;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +26,13 @@ class DatabaseSeeder extends Seeder
 
         $users->each(function ($item, $key) {
             Game::factory()->for($item)->create();
+        });
+
+        $users->each(function ($item, $key) {
+            $firstGame = Game::first();
+            Participation::factory()->for($item)->create([
+                'game_id' => $firstGame->id,
+            ]);
         });
     }
 }
