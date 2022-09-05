@@ -17,4 +17,8 @@ class Participation extends Model
         return $this->belongsTo(User::class);
     }
 
+    protected $fillable = [
+        'game_id',
+        'user_id',
+    ];
 }

@@ -19,7 +19,9 @@ class Game extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'title',
         'invite_key',
+        'language',
     ];
 }
